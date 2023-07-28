@@ -1,3 +1,7 @@
+variable "region" {
+  description = "The AWS region to deploy the resources in."
+  default     = "eu-west-1"
+}
 
 variable "project_name" {
   description = "Name for this project"
@@ -22,7 +26,7 @@ variable "codepipeline_iam_role_name" {
   default     = "codepipeline-role"
 }
 
-variable "source_repo_name" {
+/*variable "source_repo_name" {
   description = "Source repo name of the CodeCommit repository"
   type        = string
 }
@@ -30,7 +34,7 @@ variable "source_repo_name" {
 variable "source_repo_branch" {
   description = "Default branch in the Source repo for which CodePipeline needs to be configured"
   type        = string
-}
+}*/
 
 variable "repo_approvers_arn" {
   description = "ARN or ARN pattern for the IAM User/Role/Group that can be used for approving Pull Requests"

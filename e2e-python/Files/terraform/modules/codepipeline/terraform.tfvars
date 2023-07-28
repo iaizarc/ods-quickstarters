@@ -1,0 +1,7 @@
+aws_region          = "eu-west-1"
+bucket_name         = ""
+pipeline_name       = ""
+build_project_name  = ""
+pipeline_role_name  = ""
+codebuild_role_name = ""
+source_object_key   = ""

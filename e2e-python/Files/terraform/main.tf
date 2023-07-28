@@ -4,10 +4,14 @@ terraform {
   required_providers {
     aws = {
       source = "hashicorp/aws"
-      version = ">= 4.20.1"
+      version = ">= 4.31.0"
     }
   }
 
+}
+
+provider "aws" {
+  region = var.region
 }
 
 #Module for creating a new S3 bucket for storing pipeline artifacts
@@ -28,7 +32,7 @@ module "s3_artifacts_bucket" {
 
 # Module for Infrastructure Source code repository
 module "codecommit_infrastructure_source_repo" {
-  source = "./modules/codecommit"
+  source = "/modules/codecommit"
 
   create_new_repo          = var.create_new_repo
   source_repository_name   = var.source_repo_name
@@ -49,7 +53,7 @@ module "codebuild_terraform" {
   depends_on = [
     module.codecommit_infrastructure_source_repo
   ]
-  source = "./modules/codebuild"
+  source = "/modules/codebuild"
 
   project_name                        = var.project_name
   role_arn                            = module.codepipeline_iam_role.role_arn
@@ -70,7 +74,7 @@ module "codebuild_terraform" {
 }
 
 module "codepipeline_kms" {
-  source                = "./modules/kms"
+  source                = "/modules/kms"
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
   tags = {
     Project_Name = var.project_name
@@ -82,7 +86,7 @@ module "codepipeline_kms" {
 }
 
 module "codepipeline_iam_role" {
-  source                     = "./modules/iam-role"
+  source                     = "/modules/iam-role"
   project_name               = var.project_name
   create_new_role            = var.create_new_role
   codepipeline_iam_role_name = var.create_new_role == true ? "${var.project_name}-codepipeline-role" : var.codepipeline_iam_role_name
@@ -102,7 +106,7 @@ module "codepipeline_terraform" {
     module.codebuild_terraform,
     module.s3_artifacts_bucket
   ]
-  source = "./modules/codepipeline"
+  source = "modules/codepipeline"
 
   project_name          = var.project_name
   source_repo_name      = var.source_repo_name
@@ -117,4 +121,12 @@ module "codepipeline_terraform" {
     Account_ID   = local.account_id
     Region       = local.region
   }
+}
+
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
+locals {
+  account_id = data.aws_caller_identity.current.account_id
+  region     = data.aws_region.current.name
 }
