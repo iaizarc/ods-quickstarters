@@ -23,5 +23,8 @@ variable "codebuild_role_name" {
 }
 
 variable "source_object_key" {
-  description = "The S3 object key for the source code."
+  description = "The S3 object key for the source code."    // file name
+}
+variable "project_name" {
+  description = "The name of the CodeBuild project"
 }

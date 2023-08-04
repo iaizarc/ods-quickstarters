@@ -1,74 +1,56 @@
-# -------------------------------------------
-# Common Variables
-# -------------------------------------------
-variable "region" {
-  description = "The AWS region to deploy the resources in."
-  default     = "eu-west-1"
-}
-
-variable "tags" {
-  description = "Tags to be attached to the CodePipeline"
-  type        = map(string)
-}
-
-# -------------------------------------------
-# CodePipeline
-# -------------------------------------------
 
 variable "project_name" {
   description = "Unique name for this project"
   type        = string
 }
 
-/*variable "source_repo_name" {
-  description = "Source repo name of the CodeCommit repository"
-  type        = string
-}
-
-variable "source_repo_branch" {
-  description = "Default branch in the Source repo for which CodePipeline needs to be configured"
-  type        = string
-}*/
-
-variable "s3_bucket_name" {
-  description = "S3 bucket name to be used for storing the artifacts"
-  type        = string
-}
-variable "artifacts_store_type" {
-  description = "Artifacts store type"
-  type        = string
-  default     = "S3"
-}
-
-variable "pipeline_name" {
-  description = "The name of the CodePipeline."
-}
-variable "source_repo_name" {
-  description = "Source repo name of the CodeCommit repository"
-  type        = string
-}
-
-variable "branch_name" {
-  description = "branch_name"
+variable "role_arn" {
+  description = "Codepipeline IAM role arn. "
   type        = string
   default     = ""
 }
 
-variable "source_object_key" {
-  description = "The S3 object key for the source code."
+variable "s3_bucket_name" {
+  description = "Name of the S3 bucket used to store the deployment artifacts"
+  type        = string
 }
 
-variable "codepipeline_role_arn" {
-  description = "ARN of the codepipeline IAM role"
+variable "tags" {
+  description = "Tags to be applied to the codebuild project"
+  type        = map(any)
+}
+
+variable "build_projects" {
+  description = "List of Names of the CodeBuild projects to be created"
+  type        = list(string)
+}
+
+variable "builder_compute_type" {
+  description = "Information about the compute resources the build project will use"
+  type        = string
+}
+
+variable "builder_image" {
+  description = "Docker image to use for the build project"
+  type        = string
+}
+
+variable "builder_type" {
+  description = "Type of build environment to use for related builds"
+  type        = string
+}
+
+variable "builder_image_pull_credentials_type" {
+  description = "Type of credentials AWS CodeBuild uses to pull images in your build."
+  type        = string
+}
+
+variable "build_project_source" {
+  description = "Information about the build output artifact location"
   type        = string
 }
 
 variable "kms_key_arn" {
   description = "ARN of KMS key for encryption"
   type        = string
-}
-
-variable "stages" {
-  description = "List of Map containing information about the stages of the CodePipeline"
-  type        = list(map(any))
 }

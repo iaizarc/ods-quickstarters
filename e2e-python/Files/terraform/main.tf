@@ -10,10 +10,6 @@ terraform {
 
 }
 
-provider "aws" {
-  region = var.region
-}
-
 #Module for creating a new S3 bucket for storing pipeline artifacts
 module "s3_artifacts_bucket" {
   source                = "./modules/s3"
@@ -31,7 +27,7 @@ module "s3_artifacts_bucket" {
 # Resources
 
 # Module for Infrastructure Source code repository
-module "codecommit_infrastructure_source_repo" {
+/*module "codecommit_infrastructure_source_repo" {
   source = "/modules/codecommit"
 
   create_new_repo          = var.create_new_repo
@@ -46,13 +42,13 @@ module "codecommit_infrastructure_source_repo" {
     Region       = local.region
   }
 
-}
+}*/
 
 # Module for Infrastructure Validation - CodeBuild
 module "codebuild_terraform" {
-  depends_on = [
+  /*depends_on = [
     module.codecommit_infrastructure_source_repo
-  ]
+  ]*/
   source = "/modules/codebuild"
 
   project_name                        = var.project_name
@@ -73,7 +69,7 @@ module "codebuild_terraform" {
   }
 }
 
-module "codepipeline_kms" {
+/*module "codepipeline_kms" {
   source                = "/modules/kms"
   codepipeline_role_arn = module.codepipeline_iam_role.role_arn
   tags = {
@@ -83,7 +79,7 @@ module "codepipeline_kms" {
     Region       = local.region
   }
 
-}
+}*/
 
 module "codepipeline_iam_role" {
   source                     = "/modules/iam-role"

@@ -4,7 +4,7 @@ output "codepipeline_bucket_name" {
 }
 
 output "codepipeline_arn" {
-  value       = aws_codepipeline.pipeline.arn
+  value       = aws_codepipeline.codepipeline.arn
   description = "The ARN of the created CodePipeline."
 }
 
