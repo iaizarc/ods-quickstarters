@@ -1,32 +1,12 @@
+/* generated jenkins file used for building and deploying AWS-infrastructure in projects */
+
 @Library('ods-jenkins-shared-library@@shared_library_ref@') _
 
-odsComponentStageInfrastructure(
-  imageStreamTag: 'ods/jenkins-agent-golang:<ods-version>',
-  environment: [
-    'AWS_ACCESS_KEY_ID': env.AWS_ACCESS_KEY_ID,
-    'AWS_SECRET_ACCESS_KEY': env.AWS_SECRET_ACCESS_KEY,
-    'AWS_REGION': 'eu-west-1'
+odsComponentPipeline(
+  imageStreamTag: '@ods_namespace@/jenkins-agent-terraform-2306:@agent_image_tag@',
+  branchToEnvironmentMapping: [
+    'master': 'dev',
   ]
 ) { context ->
-  stage('Provision AWS CodePipeline') {
-    // Use the AWS CLI to create the CodePipeline resources
-    sh '''
-      # Your AWS CLI commands to create the CodePipeline resources
-    '''
-  }
-
-  stage('Trigger AWS CodePipeline') {
-    awsCodePipelineTrigger(context, 'your-pipeline-name')
-  }
-
-  stage('Wait for AWS CodePipeline Execution') {
-    awsCodePipelineWaitForExecution(context, 'your-pipeline-name')
-  }
-
-  stage('Retrieve AWS CodePipeline Status') {
-    // Use the AWS CLI to retrieve the CodePipeline status
-    sh '''
-      # Your AWS CLI command to get the CodePipeline status
-    '''
-  }
+    odsComponentStageInfrastructure(context, [cloudProvider: 'AWS'])
 }
