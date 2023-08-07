@@ -1,6 +1,6 @@
 .bundle
 .kitchen
-#.terraform
+.terraform
 .terraform.lock.hcl
 .terraform-data.json
 .vscode
