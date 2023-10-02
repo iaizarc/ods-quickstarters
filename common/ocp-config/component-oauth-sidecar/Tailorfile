@@ -1,3 +1,0 @@
-serviceaccount,svc,route,bc,is,dc
-
-preserve bc:/spec/output/to/name,bc:/spec/output/imageLabels

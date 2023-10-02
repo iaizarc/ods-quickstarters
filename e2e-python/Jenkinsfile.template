@@ -2,11 +2,142 @@
 
 @Library('ods-jenkins-shared-library@@shared_library_ref@') _
 
+node {
+  aws_access_key_id = env.AWS_ACCESS_KEY_ID
+  aws_secret_access_key = env.AWS_SECRET_ACCESS_KEY
+  aws_region = env.AWS_REGION
+  dockerRegistry = env.DOCKER_REGISTRY
+
+}
+
 odsComponentPipeline(
-  imageStreamTag: '@ods_namespace@/jenkins-agent-terraform-2306:@agent_image_tag@',
+  podContainers: [
+      containerTemplate(
+        name: 'jnlp',
+        image: "${dockerRegistry}/ods/jenkins-agent-terraform:4.x",
+        envVars: [
+          envVar(key: 'AWS_ACCESS_KEY_ID', value: aws_access_key_id),
+          envVar(key: 'AWS_SECRET_ACCESS_KEY', value: aws_secret_access_key),
+          envVar(key: 'AWS_REGION', value: aws_region)
+        ],
+        alwaysPullImage: true,
+        args: '${computer.jnlpmac} ${computer.name}'
+      )
+    ],
   branchToEnvironmentMapping: [
-    'master': 'dev',
+    '*': 'dev',
+    // 'release/': 'test'
   ]
 ) { context ->
+
+    addVars2envJsonFile(context)
+
     odsComponentStageInfrastructure(context, [cloudProvider: 'AWS'])
+
+    def outputNames = stageGetNamesFromOutputs(context)
+    def aws_pipelineName = outputNames.aws_codepipeline_name
+    def bitbucket_s3 = outputNames.bitbucket_s3
+
+    publishBitbucketCodeToAWS(context, bitbucket_s3)
+    awsCodePipelineTrigger(context, aws_pipelineName)
+    awsCodePipelineWaitForExecution(context, aws_pipelineName)
+
+}
+
+
+def stageGetNamesFromOutputs(def context) {
+  script {
+    def output = sh(returnStdout: true, script: 'terraform output -json')
+    def jsonOutput = readJSON text: output
+    def aws_codepipeline_name = jsonOutput.codepipeline_name.value
+    def bitbucket_s3 = jsonOutput.bitbuckets3_name.value
+    return [aws_codepipeline_name: aws_codepipeline_name, bitbucket_s3: bitbucket_s3]
+  }
+}
+
+
+def awsCodePipelineTrigger(def context, pipelineName) {
+  stage('Trigger AWS Pipeline') {
+    sh "aws codepipeline start-pipeline-execution --name ${pipelineName}"
+  }
+}
+
+
+def awsCodePipelineWaitForExecution(def context, pipelineName) {
+  stage('Wait AWS Pipeline execution') {
+    def pipelineExecutionStatus = ''
+
+    while (true) {
+        pipelineExecutionStatus = ''
+        sleep(time: 20, unit: 'SECONDS')
+        def pipelineState = sh(
+            script: "aws codepipeline get-pipeline-state --name ${pipelineName} --query 'stageStates[*]' --output json",
+            returnStdout: true
+        ).trim()
+
+        def pipelineStages = readJSON(text: pipelineState)
+
+        pipelineStages.each { stage ->
+            def stageName = stage.stageName
+            def stageStatus = stage.latestExecution.status
+
+            echo "Stage: ${stageName}, Status: ${stageStatus}"
+
+            if (stageStatus == 'InProgress') {
+                pipelineExecutionStatus = 'InProgress'
+                return
+            } else if (stageStatus == 'Failed') {
+                pipelineExecutionStatus = 'Failed'
+                return
+            }
+        }
+
+        if (pipelineExecutionStatus == 'InProgress') {
+            echo "InProgress"
+            continue
+        } else if (pipelineExecutionStatus == 'Failed') {
+            echo 'Pipeline execution failed.'
+            break
+        } else {
+            echo 'Pipeline execution completed successfully.'
+            break
+        }
+    }
+  }
+}
+
+
+
+def publishBitbucketCodeToAWS(def context, bitbucket_s3) {
+  stage('Publish Bitbucket Code to AWS') {
+    def branch = context.gitBranch
+    def repository = context.componentId
+    sh "echo ${repository}"
+    sh "echo ${branch}"
+    zip zipFile: "${repository}-${branch}.zip", archive: false, dir: '.'
+    sh " aws s3 cp ${repository}-${branch}.zip s3://${bitbucket_s3}/${repository}-${branch}.zip"
+  }
+}
+
+def addVars2envJsonFile(def context) {
+  stage('Add variables to environment JSON File') {
+    def environment = context.environment
+    def projectId = context.projectId
+    def branch_name = context.gitBranch
+    def repository = context.componentId
+    def filePath = './environments/dev.json'
+
+    def existingJson = readFile file: filePath
+    def existingData = readJSON text: existingJson
+
+    existingData.environment = environment
+    existingData.projectId = projectId
+    existingData.aws_region = aws_region
+    existingData.repository = repository
+    existingData.branch_name = branch_name
+
+    def updatedJson = groovy.json.JsonOutput.toJson(existingData)
+
+    writeFile file: filePath, text: updatedJson
+  }
 }
