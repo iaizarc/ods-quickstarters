@@ -19,10 +19,13 @@ module SpecHelper
 
     def locals
       json_vars? ? @data : extract_first_element_of_array(@data['locals'])
+
     end
 
     def for_module(name = nil)
       json_vars? ? @data : extract_first_element_of_array(@data['module'].select { |x| x[name] }.first[name])
+      puts @data.to_json
+
     end
 
     def for_resource(type = nil, name = nil)

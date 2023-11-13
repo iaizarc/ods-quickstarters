@@ -22,6 +22,9 @@ reports:
       - /**/*.json
     base-directory: great_expectations/uncommitted/validations/person_validation_suite
     file-format: json
+  allure:
+    files:
+      - allure-report/**
 
 
 
@@ -31,10 +34,7 @@ artifacts:
     - junit-test-results.xml
     - uncommitted/data_docs/**
 
-reports:
-  allure:
-    files:
-      - allure-report/**
+
 
 post_build:
   commands:

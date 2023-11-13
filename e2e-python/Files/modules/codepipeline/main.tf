@@ -3,7 +3,6 @@ provider "aws" {
   region = var.aws_region
 }
 
-
 resource "aws_codepipeline" "codepipeline" {
   name     = "${var.projectId}-e2e-cppl-${var.aws_region}-${var.codepipeline_name}-${var.local_id}"
   role_arn = var.codepipeline_role_arn
@@ -11,7 +10,6 @@ resource "aws_codepipeline" "codepipeline" {
   artifact_store {
     type     = var.artifacts_store_type
     location = var.codepipeline_bucket_name
-
   }
 
   stage {
@@ -26,7 +24,7 @@ resource "aws_codepipeline" "codepipeline" {
       output_artifacts = ["source_output"]
 
       configuration = {
-        S3Bucket             = var.bitbuckets3
+        S3Bucket             = var.bitbucket_source_bucket_name
         S3ObjectKey          = "${var.repository}-${var.branch_name}.zip"
         PollForSourceChanges = false
       }
@@ -51,47 +49,5 @@ resource "aws_codepipeline" "codepipeline" {
   }
 }
 
-/*  stage {
-    name = "Report"
-
-    action {
-      name             = "GenerateReportPytest"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      input_artifacts  = ["GXtest_output"]
-      output_artifacts = ["GXreport_output"]
-      version          = "1"
-      configuration = {
-        ProjectName = var.GX_reporting_project_name
-      }
-    }
-    action {
-      name             = "GenerateReportGX"
-      category         = "Build"
-      owner            = "AWS"
-      provider         = "CodeBuild"
-      input_artifacts  = ["Pytest_output"]
-      output_artifacts = ["Pytest_report_output"]
-      version          = "1"
-      configuration = {
-        ProjectName = var.Pytest_reporting_project_name
-      }
-    }
-    action {
-      name            = "UploadReportToS3"
-      category        = "Deploy"
-      provider        = "S3"
-      owner           = "AWS"
-      version         = "1"
-      input_artifacts  = ["Pytest_output"]
-
-      configuration = {
-          BucketName = var.artifacts_bucket_name
-          Extract = "true"
-      }
-    }
-  }
-}*/
 
 

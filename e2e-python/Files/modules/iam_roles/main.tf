@@ -1,3 +1,25 @@
+resource "aws_iam_role" "codepipeline_role" {
+  name               = "${var.projectId}-e2e-IAMrole-${var.aws_region}-${var.pipeline_role_name}-${var.local_id}"
+  assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
+}
+
+resource "aws_iam_role" "codebuild_role" {
+  name               = "${var.projectId}-e2e-IAMrole-${var.aws_region}-${var.codebuild_role_name}-${var.local_id}"
+  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
+}
+
+resource "aws_iam_role_policy" "codepipeline_policy" {
+  name   = "${var.projectId}-e2e-policy-${var.aws_region}-${var.codepipeline_policy_name}-${var.local_id}"
+  role   = aws_iam_role.codepipeline_role.id
+  policy = data.aws_iam_policy_document.codepipeline_policy.json
+}
+
+resource "aws_iam_role_policy" "codebuild_policy" {
+  name   = "${var.projectId}-e2e-policy-${var.aws_region}-${var.codebuild_policy_name}-${var.local_id}"
+  role   = aws_iam_role.codebuild_role.id
+  policy = data.aws_iam_policy_document.codebuild_policy.json
+}
+
 data "aws_iam_policy_document" "codepipeline_assume_role" {
   statement {
     effect = "Allow"
@@ -10,6 +32,7 @@ data "aws_iam_policy_document" "codepipeline_assume_role" {
     actions = ["sts:AssumeRole"]
   }
 }
+
 data "aws_iam_policy_document" "codebuild_assume_role" {
   statement {
     effect = "Allow"
@@ -26,18 +49,16 @@ data "aws_iam_policy_document" "codebuild_assume_role" {
 data "aws_iam_policy_document" "codepipeline_policy" {
    statement {
     sid       = ""
-    actions   = ["cloudwatch:*", "s3:*", "codebuild:*"]
+    actions   = [
+        "cloudwatch:*",
+        "s3:*",
+        "codebuild:*"
+    ]
     resources = ["*"]
     effect    = "Allow"
   }
-  statement {
-    sid       = ""
-    actions   = ["codestar-connections:*"]
-    resources = ["*"]
-    effect    = "Allow"
-  }
-
 }
+
 data "aws_iam_policy_document" "codebuild_policy" {
   statement {
     sid       = ""
@@ -54,25 +75,4 @@ data "aws_iam_policy_document" "codebuild_policy" {
     resources = ["*"]
     effect    = "Allow"
   }
-}
-
-resource "aws_iam_role_policy" "codepipeline_policy" {
-  name   = "${var.projectId}-e2e-policy-${var.aws_region}-${var.pipeline_policy_name}-${var.local_id}"
-  role   = aws_iam_role.codepipeline_role.id
-  policy = data.aws_iam_policy_document.codepipeline_policy.json
-}
-resource "aws_iam_role_policy" "codebuild_policy" {
-  name   = "${var.projectId}-e2e-policy-${var.aws_region}-${var.codebuild_policy_name}-${var.local_id}"
-  role   = aws_iam_role.codebuild_role.id
-  policy = data.aws_iam_policy_document.codebuild_policy.json
-}
-
-resource "aws_iam_role" "codepipeline_role" {
-  name               = "${var.projectId}-e2e-IAMrole-${var.aws_region}-${var.pipeline_role_name}-${var.local_id}"
-  assume_role_policy = data.aws_iam_policy_document.codepipeline_assume_role.json
-}
-
-resource "aws_iam_role" "codebuild_role" {
-  name               = "${var.projectId}-e2e-IAMrole-${var.aws_region}-${var.codebuild_role_name}-${var.local_id}"
-  assume_role_policy = data.aws_iam_policy_document.codebuild_assume_role.json
 }

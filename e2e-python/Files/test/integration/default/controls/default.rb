@@ -16,7 +16,8 @@ control 'stack' do
   tag    name
 
   cfClient       = SpecHelper::AWS.sdk.client(Aws::CloudFormation)
-  cfStackName    = name
+  cfStackName    = name + '-' + id
+
 
   # ###########################################################
   # Test if Cloudformation Stack has been succesfully deployed

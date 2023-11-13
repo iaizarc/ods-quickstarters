@@ -8,12 +8,12 @@ data "aws_iam_policy_document" "allow_s3_get_objects" {
     sid       = ""
     principals {
       type        = "AWS"
-      identifiers = ["722935736819"]
+      identifiers = [var.account_id]
     }
     actions   = ["s3:GetObject"]
     resources = [
-      var.s3_bucket_arn,
-      "${var.s3_bucket_arn}/*",
+      var.results_s3_bucket_arn,
+      "${var.results_s3_bucket_arn}/*",
     ]
     effect    = "Allow"
   }

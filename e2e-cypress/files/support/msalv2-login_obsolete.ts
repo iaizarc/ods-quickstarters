@@ -10,7 +10,7 @@
 // The variables below can be set by providing environment variables upfront. Environment variables for Cypress always need to have
 // "CYPRESS_..." prepended, e.g. CYPRESS_TENANT_ID, CYPRESS_CLIENT_ID, etc.
 //
-// ATTENTION: Please also check the "./Jenkinsfile" on how these environment variables are loaded on Jenkins from OpenShift.
+// ATTENTION: Please also check the "./Jenkinsfile.template" on how these environment variables are loaded on Jenkins from OpenShift.
 //
 // For local development it is also possible to inject environment variables via a "./cypress.env.json" file. You can use
 // "./cypress.env.json.template" as a template for this. The leading "CYPRESS_..." is not needed here.

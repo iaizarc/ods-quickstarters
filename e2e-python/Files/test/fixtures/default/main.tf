@@ -1,5 +1,5 @@
 locals {
-  name = "stack-aws-quickstarter"
+  name = "stack-aws-quickstarter-test"
   tags = {
     Name = local.name
   }

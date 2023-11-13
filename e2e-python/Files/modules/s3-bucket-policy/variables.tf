@@ -4,14 +4,12 @@ variable "results_s3_bucket_name" {
   type        = string
 }
 
-variable "s3bucket_policy_name" {
-  description = "name_for_the_s3bucket_policy"
-  type        = string
-  default     = "results_s3bucket_policy"
-}
-
-variable "s3_bucket_arn" {
-  description = "arn_for_the_s3bucket_policy"
+variable "results_s3_bucket_arn" {
+  description = "arn_for_the_results_s3_policy"
   type        = string
 }
 
+variable "account_id" {
+  description = "AWS account id"
+  type        = string
+}

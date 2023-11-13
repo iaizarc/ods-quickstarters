@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="0.771" timestamp="2023-10-17T15:47:25.150717" hostname="WKS0002834571"><testcase classname="allure_pytest_test" name="test_s3_file_present" time="0.339"><failure message="FileNotFoundError: [Errno 2] No such file or directory: 'terraform_outputs.json'">s3_client = &lt;botocore.client.S3 object at 0x000001A1845807C0&gt;
+
+    @allure.feature("S3 Tests")
+    @allure.story("Check File Presence")
+    def test_s3_file_present(s3_client):
+    
+&gt;       outputs_tf = get_terraform_outputs()
+
+allure_pytest_test.py:36: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ 
+
+    def get_terraform_outputs():
+&gt;       with open('terraform_outputs.json') as file:
+E       FileNotFoundError: [Errno 2] No such file or directory: 'terraform_outputs.json'
+
+allure_pytest_test.py:8: FileNotFoundError</failure></testcase></testsuite></testsuites>

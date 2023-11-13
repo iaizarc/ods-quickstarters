@@ -1,30 +1,8 @@
-# -------------------------------------------
-# Common Variables
-# -------------------------------------------
-
-variable "aws_region" {
-  description = "AWS infrastructure regio"
-  type        = string
-  default     = "eu-west-1"
-}
-
-
-variable "tags" {
-  description = "Tag map for the resource"
-  type        = map(string)
-  default     = {}
-}
-
-# -------------------------------------------
-# CodeBuild
-# -------------------------------------------
-
 variable "codebuild_project_name" {
   description = "codebuild project name"
   type        = string
   default     = "codebuild-project"
 }
-
 
 variable "codebuild_role_arn" {
   description = "Codebuild IAM role arn. "
@@ -70,45 +48,13 @@ variable "image_pull_credentials_type" {
 variable "source_type" {
   description = "Artifacts_source_type"
   type        = string
-  default     = "CODEPIPELINE" #"GITHUB"
+  default     = "CODEPIPELINE"
 }
 
-/*variable "source_location" {
-  description = "source_location"
-  type        = string
-  default     = ""
-}*/
-
-variable "env_name_interpreter" {
-  type        = string
-  default     = "PYTHON_VERSION"
-}
 variable "env_version" {
   type        = string
   default     = "3.9"
 }
-variable "env_name_repository" {
-  description = "environment repository name"
-  type        = string
-  default     = "REPOSITORY"
-}
-variable "repository" {
-  description = "QS bitbucket repository"
-  type        = string
-  default     = "e2e-python"
-}
-
-variable "env_name_branch" {
-  description = "environment name branch"
-  type        = string
-  default     = "BRANCH"
-}
-variable "branch_name" {
-  description = "repository branch_name"
-  type        = string
-  default     = "feature/TPS2021-677-jenkins-execute-great-expectations"  //"master"
-}
-
 
 variable "buildspec_path" {
   description = "buildspec_file_absolute_path"
@@ -116,32 +62,31 @@ variable "buildspec_path" {
   default     = "./buildspec.yml"
 }
 
-
 variable "report_build_status" {
   description = "report_build_status"
   type        = bool
   default     = false
 }
 
-variable "Pytest_project_name" {
-  description = "Pytest testing project name"
-  type        = string
-  default     = "Pytest-project"
-}
 variable "GXtest_project_name" {
   description = "codebuild Great Expectation project name"
   type        = string
   default     = "GXtest-project"
 }
-variable "Pytest_reporting_project_name" {
-  description = "Pytest reporting project name"
-  type        = string
-  default     = "Pytest_reporting-project"
-}
 variable "GX_reporting_project_name" {
   description = "Great Expectations reporting project name"
   type        = string
   default     = "GX_reporting-project"
+}
+variable "Pytest_project_name" {
+  description = "Pytest testing project name"
+  type        = string
+  default     = "Pytest-project"
+}
+variable "Pytest_reporting_project_name" {
+  description = "Pytest reporting project name"
+  type        = string
+  default     = "Pytest_reporting-project"
 }
 
 variable "codepipeline_bucket_name" {
@@ -149,7 +94,7 @@ variable "codepipeline_bucket_name" {
   type        = string
 }
 
-variable "e2e_results_bucket" {
+variable "e2e_results_bucket_name" {
   description = "s3_bucket_for_results_artifacts"
   type        = string
 }
@@ -163,6 +108,12 @@ variable "projectId" {
   description = "EDP project name"
   type        = string
   default     = "testpg"
+}
+
+variable "aws_region" {
+  description = "AWS infrastructure regio"
+  type        = string
+  default     = "eu-west-1"
 }
 
 variable "environment" {

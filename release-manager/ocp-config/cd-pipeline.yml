@@ -49,7 +49,7 @@ objects:
               value: WIP
             - name: releaseStatusJiraIssueKey
               value: ''
-          jenkinsfilePath: Jenkinsfile
+          jenkinsfilePath: Jenkinsfile.template
         type: JenkinsPipeline
       successfulBuildsHistoryLimit: 5
       triggers:
