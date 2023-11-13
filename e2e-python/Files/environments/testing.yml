@@ -1,5 +1,0 @@
-region: eu-west-1 
-  
-credentials:
-  key: testpg-cd-aws-access-key-id-testing
-  secret: testpg-cd-aws-secret-access-key-testing

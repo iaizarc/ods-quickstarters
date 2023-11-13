@@ -1,7 +1,0 @@
-region: eu-west-1
-
-credentials:
-  key: testpg-cd-aws-access-key-id-qa
-  secret: testpg-cd-aws-secret-access-key-qa
-
-account: "722935736819"
