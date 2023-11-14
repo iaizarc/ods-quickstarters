@@ -14,7 +14,7 @@ odsComponentPipeline(
   podContainers: [
       containerTemplate(
         name: 'jnlp',
-        image: "${dockerRegistry}/ods/jenkins-agent-terraform:4.x",
+        image: "${dockerRegistry}/ods/jenkins-agent-terraform-2306:4.x",
         envVars: [
           envVar(key: 'AWS_ACCESS_KEY_ID', value: aws_access_key_id),
           envVar(key: 'AWS_SECRET_ACCESS_KEY', value: aws_secret_access_key),
