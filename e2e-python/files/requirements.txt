@@ -1,8 +1,0 @@
-great_expectations==0.17.9
-sqlalchemy
-pyathena[SQLAlchemy]
-pytest
-allure-pytest
-allure-combine
-boto3
-
