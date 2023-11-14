@@ -15,7 +15,6 @@ module "codebuild_terraform" {
 #  environment_type = var.environment_type
 #  environment_image = var.environment_image
 #  image_pull_credentials_type = var.image_pull_credentials_type
-#  buildspec_path = var.buildspec_path
 #  testing_project_name = var.testing_project_name
 
   codebuild_role_arn   = module.iam_roles.codebuild_role_arn

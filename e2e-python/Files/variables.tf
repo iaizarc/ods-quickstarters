@@ -9,7 +9,6 @@ variable "environment_type" {}
 variable "image_pull_credentials_type" {}
 variable "source_type" {}
 variable "env_version" {}
-variable "buildspec_path" {}
 
 # CodePipeline
 variable "codepipeline_name" {}

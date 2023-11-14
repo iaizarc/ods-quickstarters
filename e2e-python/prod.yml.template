@@ -1,7 +1,7 @@
-region: eu-west-1
-
+region: eu-west-1 
+  
 credentials:
-  key: testpg-cd-aws-access-key-id-prod
-  secret: testpg-cd-aws-secret-access-key-prod
+  key: @project_id@-cd-aws-access-key-id-prod
+  secret: @project_id@-cd-aws-secret-access-key-prod
 
-account: "722935736819"
+account: "<your_aws_account_id>"

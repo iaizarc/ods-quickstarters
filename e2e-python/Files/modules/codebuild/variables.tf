@@ -56,12 +56,6 @@ variable "env_version" {
   default     = "3.9"
 }
 
-variable "buildspec_path" {
-  description = "buildspec_file_absolute_path"
-  type        = string
-  default     = "./buildspec.yml"
-}
-
 variable "report_build_status" {
   description = "report_build_status"
   type        = bool

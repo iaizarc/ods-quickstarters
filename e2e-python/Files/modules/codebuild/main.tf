@@ -23,7 +23,6 @@ resource "aws_codebuild_project" "build_project" {
 
   source {
     type      = var.source_type
-    //buildspec = file("${var.buildspec_path}")
     report_build_status = var.report_build_status
     buildspec = <<-EOT
       version: 0.2

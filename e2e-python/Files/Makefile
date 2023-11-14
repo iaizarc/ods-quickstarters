@@ -30,7 +30,6 @@ init: install-dev-deps install-test-deps
 # create terraform.tfvars.json
 create-tfvars:
 	terraform-docs json . | jq '.inputs | map({ (.name): .default }) | add' > terraform.tfvars.json
-	cat env.auto.tfvars.json
 
 .PHONY: prep-test
 prep-test:
