@@ -31,7 +31,6 @@ odsComponentPipeline(
 ) { context ->
 
     addVars2envJsonFile(context)
-
     odsComponentStageInfrastructure(context, [cloudProvider: 'AWS'])
     generateTerraformOutputsFile()
 
@@ -133,7 +132,7 @@ def retrieveReportsFromAWS(results3_name) {
   stage('Retrieve reports from AWS') {
     sh "ls"
     sh "aws s3 cp s3://${results3_name}/junit/GX_junit.xml ./junit/GX_junit.xml"
-    sh "aws s3 cp s3://${results3_name}/junit/Pytest_junit.xml ./junit/GX_junit.xml"
+    sh "aws s3 cp s3://${results3_name}/junit/Pytest_junit.xml ./junit/Pytest_junit.xml"
     sh "ls"
   }
 }

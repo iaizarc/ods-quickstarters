@@ -49,11 +49,11 @@ resource "aws_codebuild_project" "build_project" {
             - aws s3 cp great_expectations/uncommitted/data_docs/local_site s3://${var.e2e_results_bucket_name}/GX_test_results --recursive
             - python utils/json2JUnit.py
 
-            - aws s3 cp s3://${var.e2e_results_bucket_name}/pytest_results/allure_report/history/ pytest/allure_report/history/ --recursive
+            - aws s3 cp s3://${var.e2e_results_bucket_name}/pytest_results/allure_report/history pytest/test_results/history --recursive
             - allure generate pytest/test_results -o pytest/allure_report --clean
             - allure-combine pytest/allure_report
             - aws s3 cp pytest/allure_report/history s3://${var.e2e_results_bucket_name}/pytest_results/history --recursive
-            - aws s3 cp pytest/allure_report/complete.html s3://${var.e2e_results_bucket_name}/pytest_results/allure_report/complete.html
+            - aws s3 cp pytest/allure_report s3://${var.e2e_results_bucket_name}/pytest_results/allure_report --recursive
 
             - aws s3 cp great_expectations/uncommitted/validations/junit.xml s3://${var.e2e_results_bucket_name}/junit/GX_junit.xml
             - aws s3 cp pytest/test_results/junit.xml s3://${var.e2e_results_bucket_name}/junit/Pytest_junit.xml

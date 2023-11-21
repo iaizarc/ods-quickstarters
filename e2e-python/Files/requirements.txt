@@ -1,4 +1,4 @@
-great_expectations==0.17.9
+great_expectations
 sqlalchemy
 pyathena[SQLAlchemy]
 pytest
