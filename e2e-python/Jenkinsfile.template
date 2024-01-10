@@ -64,8 +64,8 @@ odsComponentPipeline(
 
 def getEnvironment(def context){
     sh "echo Get Environment Variables"
-    AWS_ACCESS_KEY_ID = sh(returnStdout: true, script:"oc get secret aws-access-key-id-development --namespace ${context.cdProject} --output jsonpath='{.data.secrettext}' | base64 -d")
-    AWS_SECRET_ACCESS_KEY = sh(returnStdout: true, script:"oc get secret aws-secret-access-key-development --namespace ${context.cdProject} --output jsonpath='{.data.secrettext}' | base64 -d")
+    AWS_ACCESS_KEY_ID = sh(returnStdout: true, script:"oc get secret aws-access-key-id-${context.environment} --namespace ${context.cdProject} --output jsonpath='{.data.secrettext}' | base64 -d")
+    AWS_SECRET_ACCESS_KEY = sh(returnStdout: true, script:"oc get secret aws-secret-access-key-${context.environment} --namespace ${context.cdProject} --output jsonpath='{.data.secrettext}' | base64 -d")
 
 }
 
