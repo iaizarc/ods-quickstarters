@@ -1,4 +1,4 @@
-componentID: e2ee-python
+componentID: e2e-python
 steps:
 - type: provision
   provisionParams:
