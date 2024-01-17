@@ -149,6 +149,7 @@ def retrieveReportsFromAWS(def context, results3_name) {
     sh "aws s3 cp s3://${results3_name}/junit/integration_pytest_junit.xml ./build/test-results/test/integration_pytest_junit.xml"
 
     sh "aws s3 cp s3://${results3_name}/GX_test_results ./build/test-results/test/artifacts/acceptance/acceptance_GX_report --recursive"
+    sh "aws s3 cp s3://${results3_name}/GX_jsons ./build/test-results/test/artifacts/acceptance/GX_jsons --recursive"
     sh "aws s3 cp s3://${results3_name}/pytest_results/acceptance/acceptance_allure_report_complete.html ./build/test-results/test/artifacts/acceptance/acceptance_pytest_report.html"
     sh "aws s3 cp s3://${results3_name}/pytest_results/installation/installation_allure_report_complete.html ./build/test-results/test/artifacts/installation/installation_pytest_report.html"
     sh "aws s3 cp s3://${results3_name}/pytest_results/integration/integration_allure_report_complete.html ./build/test-results/test/artifacts/integration/integration_pytest_report.html"

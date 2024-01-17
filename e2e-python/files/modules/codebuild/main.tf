@@ -50,6 +50,7 @@ resource "aws_codebuild_project" "build_project" {
           commands:
             - (cd tests/acceptance && great_expectations -y docs build)
             - aws s3 cp tests/acceptance/great_expectations/uncommitted/data_docs/local_site s3://${var.e2e_results_bucket_name}/GX_test_results --recursive
+            - aws s3 cp tests/acceptance/great_expectations/uncommitted/validations s3://${var.e2e_results_bucket_name}/GX_jsons --recursive
             - python utils/json2JUnit.py
 
             - aws s3 cp s3://${var.e2e_results_bucket_name}/pytest_results/acceptance/history pytest/test_results/acceptance/history --recursive
